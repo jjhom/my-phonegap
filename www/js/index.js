@@ -187,7 +187,7 @@ function ring(nfcEvent) {
 }
 
 function scanQR() {
-  window.barcodescanner.scan(function(resp) {
+  cordova.plugin.BarcodeScanner.scan(function(resp) {
 	// qr code discovered, need to decode, set action and option
 	var bc = resp.text;
 	bc = JSON.parse(bc);
