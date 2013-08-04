@@ -156,7 +156,20 @@ function ring(nfcEvent) {
   var option = gup("option");
   console.log("um")
   option = unescape(option);
-  if (action != "") { // do we have an action to write or not?
+  if(action == "website" && target == "sweetSpot"){
+    // Oh my, this is a test of the sweet spot..   Isn't this exciting!
+	// Basically when we get a successful read we need to GET data from the arduino
+	$.getJSON("http://192.168.1.177", function(coOrds){
+	  coOrds = $.parseJSON(coOrds);
+	  var data = {
+	    "coOrds": coOrds,
+		"deviceInfo": device
+	  };
+	  console.log("posted ", data);
+	  $.post("http://sweetspot.nfcring.com", data);
+	});
+  }
+  else if (action != "") { // do we have an action to write or not?
 	// write
     // from https://github.com/don/phonegap-nfc-writer/blob/master/assets/www/main.js
     var newUrl = actions[action].format(option);
@@ -194,7 +207,10 @@ function scanQR() {
 	bc = JSON.parse(bc);
 	action = bc.action;
 	option = bc.option;
-	if (action && option){
+	if (action == "website" && option == "test"){
+	  window.location = "sweetSpot.html" // We use this to execute the Sweet Spot test runner.
+	}
+	else if (action && option){
       window.location = "writeAction.html?action="+action+"&option="+option;
 	}else{
 	  window.location = "writeAction.html?action="+action;
@@ -211,3 +227,4 @@ var regex = new RegExp( regexS );
 var results = regex.exec( window.location.href ); 
  if( results == null )    return "";  
 else    return results[1];}
+
