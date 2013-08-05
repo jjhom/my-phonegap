@@ -272,8 +272,16 @@ function gotFileEntry(fileEntry) {
 }
 
 function gotFileWriter(writer) {
-  writer.seek(writer.length);
-  writer.write(data);
+  console.log("B");
+  writer.onwriteend = function(evt) {
+    console.log("M");
+    writer.seek(writer.length || 0);
+    writer.write(data);
+    writer.onwriteend = function(evt){
+      console.log("contents of file now 'some different text'");
+    };
+  };
+  writer.write("NEW");
 }
 
 function fail(error) {
