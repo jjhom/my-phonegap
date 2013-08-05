@@ -210,7 +210,7 @@ function scanQR() {
 	action = bc.action;
 	option = bc.option;
 	if (action == "website" && option == "sweetSpot"){
-	  window.location = "sweetSpot.html" // We use this to execute the Sweet Spot test runner.
+	  window.location = "sweetSpot.html?action=website&option=sweetSpot" // We use this to execute the Sweet Spot test runner.
 	}
 	else if (action && option){
       window.location = "writeAction.html?action="+action+"&option="+option;
