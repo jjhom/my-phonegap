@@ -197,22 +197,37 @@ function ring(nfcEvent) { // On NFC Activity..
 function runCoOrds(){
   // Oh my, this is a test of the sweet spot..   Isn't this exciting!
   // Basically when we get a successful read we need to GET data from the arduino
-  $.getJSON("http://192.168.1.177", function(coOrds){
-    coOrds = $.parseJSON(coOrds);
-    data = {
-      "coOrds": coOrds,
-      "deviceUuid": device.uuid,
-	  "deviceModel": device.model
-    };
-    $('.actionContents').append(data + "<br/>");
+  // $.getJSON("http://192.168.1.177", function(coOrds){
+  
+  $.ajax({
+    url: 'http://192.168.1.177/',
+    dataType: 'jsonp',
+    jsonp: 'callback',
+    jsonpCallback: 'jsonpCallback',
+    success: function(){
+	console.log("win");
+      alert("pow");
+	  /*
+      coOrds = $.parseJSON(coOrds);
+      data = {
+        "coOrds": coOrds,
+        "deviceUuid": device.uuid,
+	    "deviceModel": device.model
+      };
+      $('.actionContents').append(data + "<br/>");
 	
-    console.log("posted ", data);
+      console.log("got ", data);
 	
-    $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+      $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+ 	  */
+	  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
 	
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
-	
-	$('.actionContents').append("Yay");
+	  $('.actionContents').append("Yay");
+	},
+  	failure: function(){
+	  console.log("failed");
+	  alert("FAIL");
+	}
 	
   });
   
