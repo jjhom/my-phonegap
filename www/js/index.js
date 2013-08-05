@@ -183,8 +183,8 @@ function ring(nfcEvent) { // On NFC Activity..
 	console.log(ring);
 	ringData = nfc.bytesToString(ring.ndefMessage[0].payload); // TODO make this less fragile 
 	if(ringData.indexOf("sweetspot.nfcring.com") !== -1){
-	  alert("Reading sweet spot data..  Nice job hombre");
-      runCoOrds();
+	  alert("redirecting to sweet spot page");
+	  window.location = "sweetSpot.html?action=website&option=sweetSpot" // We use this to execute the Sweet Spot test runner.
 	}else{
 	  alert(ringData);
 	}
