@@ -1,6 +1,7 @@
 // var ndefRecord = {}; // ndef Record
 var data = {}; // data
 var toWrite = false; // ugh this is hacky and ugly and prolly not even needed...
+var x, y;
 
 var actions = {
   twitter: {
@@ -210,31 +211,15 @@ function runCoOrds(){
         "deviceUuid": device.uuid,
 	    "deviceModel": device.model
       };
-	  var x = coOrds.x / 10000; // Note this is prolly unhealthy
-	  var y = coOrds.y / 10000; // Note this is prolly unhealthy
+	  x = coOrds.x / 10000; // Note this is prolly unhealthy
+	  y = coOrds.y / 10000; // Note this is prolly unhealthy
 	  console.log(x,y);
       $('.actionContents').append("<li>X: " +x +" ,Y: "+y +"</li>");
 	
       console.log("got ", data);
-	
-      // $.post("http://sweetspot.nfcring.com", data); // Post the data off..
-      // window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
- 	  var writer = new FileWriter("/sdcard/sweetSpot.txt");
 	  
-      console.log("writer", writer);
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
 
-	  if(toWrite){ // if its null
-	    writer.write(data.deviceModel + " " + data.deviceUuid + "\n");
-		toWrite = true; // have we already begun for this session?
-	  }
-
-	  console.log("here");
-	  writer.seek(writer.length);
-	  writer.write(x + "," + y);
-      writer.abort();
-
-	  console.log("appending");
-	  
 	},
   	error: function(xhr, ajaxOts, e){
       console.log(xhr, ajaxOts, e);
@@ -277,9 +262,8 @@ function gup( name ){
   }
 }
 
-/*
-function gotFS(fileSystem) { // Open sweetSpot.log
-  fileSystem.root.getFile("sweetSpot.log", {create: true, exclusive: false}, gotFileEntry, fail);
+function gotFS(fileSystem) {
+  fileSystem.root.getFile("sweetSpot.txt", {create: true, exclusive: false}, gotFileEntry, fail);
 }
 
 function gotFileEntry(fileEntry) {
@@ -287,31 +271,13 @@ function gotFileEntry(fileEntry) {
 }
 
 function gotFileWriter(writer) {
-  console.log("B");
   writer.onwriteend = function(evt) {
-    console.log("M");
-    writer.seek(writer.length || 0);
-    writer.write(data);
-    writer.onwriteend = function(evt){
-      console.log("contents of file now 'some different text'");
-    };
+    console.log("wrote x n y");
   };
-  writer.write("NEW");
+  writer.seek(writer.length);
+  writer.write(device.uuid + "," + device.model + "," + x + "," + y);
 }
 
 function fail(error) {
   console.log(error.code);
 }
-
-function clearFS(fileSystem) { // Clear file
-  fileSystem.root.getFile("sweetSpot.log", null, clearFile, fail);
-}
-
-function gotFileEntry(fileEntry) {
-  fileEntry.createWriter(clearFileWriter, fail);
-}
-
-function clearFileWriter(writer) {
-  writer.write(""); // blanks file
-}
-*/
