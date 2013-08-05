@@ -181,10 +181,14 @@ function ring(nfcEvent) { // On NFC Activity..
 	var ring = nfcEvent.tag;
 	console.log(ring);
 	ringData = nfc.bytesToString(ring.ndefMessage[0].payload); // TODO make this less fragile 
-	alert(ringData);
-	if(ringData == "sweetspot.nfcring.com"){
+		if(ringData == "sweetspot.nfcring.com"){
+	  alert("Reading sweet spot data..  Nice job hombre");
       runCoOrds();
 	}
+	alert("pow");
+	alert(ringData);
+	alert("foo");
+
   }
 }
 
