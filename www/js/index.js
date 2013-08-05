@@ -1,5 +1,6 @@
 // var ndefRecord = {}; // ndef Record
 var data = {}; // data
+var toWrite = false; // ugh this is hacky and ugly and prolly not even needed...
 
 var actions = {
   twitter: {
@@ -217,8 +218,23 @@ function runCoOrds(){
       console.log("got ", data);
 	
       // $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+      // window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
+ 	  var writer = new FileWriter("/sdcard/sweetSpot.txt");
+	  
+      console.log("writer", writer);
 
-	  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
+	  if(toWrite){ // if its null
+	    writer.write(data.deviceModel + " " + data.deviceUuid + "\n");
+		toWrite = true; // have we already begun for this session?
+	  }
+
+	  console.log("here");
+	  writer.seek(writer.length);
+	  writer.write(x + "," + y);
+      writer.abort();
+
+	  console.log("appending");
+	  
 	},
   	error: function(xhr, ajaxOts, e){
       console.log(xhr, ajaxOts, e);
@@ -261,6 +277,7 @@ function gup( name ){
   }
 }
 
+/*
 function gotFS(fileSystem) { // Open sweetSpot.log
   fileSystem.root.getFile("sweetSpot.log", {create: true, exclusive: false}, gotFileEntry, fail);
 }
@@ -297,3 +314,4 @@ function gotFileEntry(fileEntry) {
 function clearFileWriter(writer) {
   writer.write(""); // blanks file
 }
+*/
