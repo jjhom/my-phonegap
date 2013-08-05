@@ -203,29 +203,27 @@ function runCoOrds(){
     url: "http://192.168.1.177",
     success: function(coOrds){
 	  console.log(coOrds);
-      coOrds = $.parseJSON(coOrds);
+      // coOrds = $.parseJSON(coOrds);
       data = {
         "coOrds": coOrds,
         "deviceUuid": device.uuid,
 	    "deviceModel": device.model
       };
-      $('.actionContents').append(data + "<br/>");
+	  var x = coOrds.x / 10000; // Note this is prolly unhealthy
+	  var y = coOrds.y / 10000; // Note this is prolly unhealthy
+	  console.log(x,y);
+      $('.actionContents').append("<li>X: " +x +" ,Y: "+y +"</li>");
 	
       console.log("got ", data);
 	
-      $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+      // $.post("http://sweetspot.nfcring.com", data); // Post the data off..
 
 	  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
-	
-	  $('.actionContents').append("Yay");
 	},
   	error: function(xhr, ajaxOts, e){
       console.log(xhr, ajaxOts, e);
     }
-	
   });
-  
-  
 }
 
 function scanQR() {
