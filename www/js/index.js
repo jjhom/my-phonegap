@@ -207,9 +207,7 @@ function scanQR() {
 	bc = JSON.parse(bc);
 	action = bc.action;
 	option = bc.option;
-	  alert(action);
-  alert(option);
-	if (action == "website" && option == "test"){
+	if (action == "website" && option == "sweetSpot"){
 	  window.location = "sweetSpot.html" // We use this to execute the Sweet Spot test runner.
 	}
 	else if (action && option){
