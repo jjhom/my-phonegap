@@ -71,6 +71,7 @@ var app = {
     // so we need to call app.report(), and not this.report()
     console.log('deviceready');
     if(nfc){
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // prepare File system
       nfc.addNdefListener(function (nfcEvent) {
         ring(nfcEvent); // TODO uncomment me
         console.log("Attempting to bind to NFC");
@@ -205,7 +206,7 @@ function runCoOrds(){
     };
     console.log("posted ", data);
 	
-    $.post("http://sweetspot.nfcring.com", data);
+    // $.post("http://sweetspot.nfcring.com", data);
 	
   });
 }
@@ -240,3 +241,30 @@ var results = regex.exec( window.location.href );
  if( results == null )    return "";  
 else    return results[1];}
 
+function gotFS(fileSystem) {
+  fileSystem.root.getFile("sweetSpot.txt", {create: true, exclusive: false}, gotFileEntry, fail);
+}
+
+function gotFileEntry(fileEntry) {
+  fileEntry.createWriter(gotFileWriter, fail);
+}
+
+function gotFileWriter(writer) {
+  writer.onwriteend = function(evt) {
+    console.log("contents of file now 'some sample text'");
+    writer.truncate(11);
+    writer.onwriteend = function(evt) {
+      console.log("contents of file now 'some sample'");
+      writer.seek(4);
+      writer.write(" different text");
+      writer.onwriteend = function(evt){
+        console.log("contents of file now 'some different text'");
+      }
+    };
+  };
+  writer.write("some sample text");
+}
+
+function fail(error) {
+  console.log(error.code);
+}
