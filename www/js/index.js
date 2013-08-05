@@ -1,4 +1,5 @@
-var ndefRecord = {}; // last one
+// var ndefRecord = {}; // ndef Record
+var data = {}; // data
 
 var actions = {
   twitter: {
@@ -71,7 +72,9 @@ var app = {
     // so we need to call app.report(), and not this.report()
     console.log('deviceready');
     if(nfc){
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // prepare File system
+	
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, clearFS, fail);
+
       nfc.addNdefListener(function (nfcEvent) {
         ring(nfcEvent); // TODO uncomment me
         console.log("Attempting to bind to NFC");
@@ -82,7 +85,7 @@ var app = {
         $('#createNew, #read, #scan').attr('disabled','disabled');
         // console.log("Fail.");
       });
-      ndefRecord = ndef.uriRecord("http://nfcring.com"); // placeholder..
+      // ndefRecord = ndef.uriRecord("http://nfcring.com"); // placeholder..
       console.log('is barcode ready? ' + window.barcodescanner);
     }
   }
@@ -165,7 +168,7 @@ function ring(nfcEvent) { // On NFC Activity..
     // from https://github.com/don/phonegap-nfc-writer/blob/master/assets/www/main.js
     var newUrl = actions[action].format(option);
     console.log("New URL", newUrl)
-    ndefRecord = ndef.uriRecord(newUrl); // support more types.. TODO
+    var ndefRecord = ndef.uriRecord(newUrl); // support more types.. TODO
 
     nfc.write([ndefRecord], function () {
       navigator.notification.vibrate(100);
@@ -196,7 +199,7 @@ function runCoOrds(){
   // Basically when we get a successful read we need to GET data from the arduino
   $.getJSON("http://192.168.1.177", function(coOrds){
     coOrds = $.parseJSON(coOrds);
-    var data = {
+    data = {
       "coOrds": coOrds,
       "deviceUuid": device.uuid,
 	  "deviceModel": device.model
@@ -206,6 +209,8 @@ function runCoOrds(){
     console.log("posted ", data);
 	
     $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+	
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
 	
 	$('.actionContents').append("Yay");
 	
@@ -249,7 +254,7 @@ function gup( name ){
   }
 }
 
-function gotFS(fileSystem) {
+function gotFS(fileSystem) { // Open sweetSpot.log
   fileSystem.root.getFile("sweetSpot.log", {create: true, exclusive: false}, gotFileEntry, fail);
 }
 
@@ -257,30 +262,23 @@ function gotFileEntry(fileEntry) {
   fileEntry.createWriter(gotFileWriter, fail);
 }
 
-function onGetDirectorySuccess(dir) { 
-  console.log("Created dir "+dir.name); 
-} 
-
-function onGetDirectoryFail(error) { 
-  console.log("Error creating directory "+error.code); 
-} 
-
 function gotFileWriter(writer) {
-  writer.onwriteend = function(evt) {
-    console.log("contents of file now 'some sample text'");
-    writer.truncate(11);
-    writer.onwriteend = function(evt) {
-      console.log("contents of file now 'some sample'");
-      writer.seek(4);
-      writer.write(" different text");
-      writer.onwriteend = function(evt){
-        console.log("contents of file now 'some different text'");
-      }
-    };
-  };
-  writer.write("some sample text");
+  writer.seek(writer.length);
+  writer.write("appending..");
 }
 
 function fail(error) {
   console.log(error.code);
+}
+
+function clearFS(fileSystem) { // Clear file
+  fileSystem.root.getFile("sweetSpot.log", null, clearFile, fail);
+}
+
+function gotFileEntry(fileEntry) {
+  fileEntry.createWriter(clearFileWriter, fail);
+}
+
+function clearFileWriter(writer) {
+  writer.write(""); // blanks file
 }
