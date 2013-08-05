@@ -199,8 +199,7 @@ function ring(nfcEvent) { // On NFC Activity..
 function runCoOrds(){
   // Oh my, this is a test of the sweet spot..   Isn't this exciting!
   // Basically when we get a successful read we need to GET data from the arduino
-  // $.getJSON("http://192.168.1.177", function(coOrds){
-  
+ 
   $.ajax({
     url: "http://192.168.1.177",
     success: function(coOrds){
