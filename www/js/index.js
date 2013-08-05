@@ -156,6 +156,8 @@ function ring(nfcEvent) {
   var option = gup("option");
   console.log("um")
   option = unescape(option);
+  alert(action);
+  alert(option);
   if(action == "website" && option == "sweetSpot"){
     alert("WIFI needs to be on and be able to access Arduino also make sure screen or device wont turn off during test");
     // Oh my, this is a test of the sweet spot..   Isn't this exciting!
