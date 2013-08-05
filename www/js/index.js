@@ -200,14 +200,9 @@ function runCoOrds(){
   // $.getJSON("http://192.168.1.177", function(coOrds){
   
   $.ajax({
-    url: 'http://192.168.1.177/',
-    dataType: 'jsonp',
-    jsonp: 'callback',
-    jsonpCallback: 'jsonpCallback',
-    success: function(){
-	console.log("win");
-      alert("pow");
-	  /*
+    url: "http://192.168.1.177",
+    success: function(coOrds){
+	  console.log(coOrds);
       coOrds = $.parseJSON(coOrds);
       data = {
         "coOrds": coOrds,
@@ -219,15 +214,14 @@ function runCoOrds(){
       console.log("got ", data);
 	
       $.post("http://sweetspot.nfcring.com", data); // Post the data off..
- 	  */
+
 	  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail); // Write to FS
 	
 	  $('.actionContents').append("Yay");
 	},
-  	failure: function(){
-	  console.log("failed");
-	  alert("FAIL");
-	}
+  	error: function(xhr, ajaxOts, e){
+      console.log(xhr, ajaxOts, e);
+    }
 	
   });
   
