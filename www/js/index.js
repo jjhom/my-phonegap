@@ -155,14 +155,16 @@ function ring(nfcEvent) {
   var action = gup("action");
   var option = gup("option");
   option = unescape(option);
-  alert(action);
-  alert(option);
   if(action == "website" && option == "sweetSpot"){ // are we measuring the sweet spot?
     alert("WIFI needs to be on and be able to access Arduino also make sure screen or device wont turn off during test");
     // Oh my, this is a test of the sweet spot..   Isn't this exciting!
 	// Basically when we get a successful read we need to GET data from the arduino
 	$.getJSON("http://192.168.1.177", function(coOrds){
 	  coOrds = $.parseJSON(coOrds);
+	  alert(coOrds.x);
+	  alert(coOrds.y);
+	  alert(device);
+	  alert(coOrds);
 	  var data = {
 	    "coOrds": coOrds,
 		"deviceInfo": device
