@@ -154,10 +154,7 @@ function ring(nfcEvent) {
   console.log("Ring found, yay!")
   var action = gup("action");
   var option = gup("option");
-  console.log("um")
   option = unescape(option);
-  alert(action);
-  alert(option);
   if(action == "website" && option == "sweetSpot"){
     alert("WIFI needs to be on and be able to access Arduino also make sure screen or device wont turn off during test");
     // Oh my, this is a test of the sweet spot..   Isn't this exciting!
@@ -210,6 +207,8 @@ function scanQR() {
 	bc = JSON.parse(bc);
 	action = bc.action;
 	option = bc.option;
+	  alert(action);
+  alert(option);
 	if (action == "website" && option == "test"){
 	  window.location = "sweetSpot.html" // We use this to execute the Sweet Spot test runner.
 	}
