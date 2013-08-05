@@ -181,7 +181,7 @@ function ring(nfcEvent) { // On NFC Activity..
     ndefRecord = ndef.uriRecord(newUrl); // support more types.. TODO
 
     nfc.write([ndefRecord], function () {
-      navigator.notification.vibrate(100); // removed due to API change in Phonegap 3.  Notifications still don't exist?
+      navigator.notification.vibrate(100);
       console.log("Written", ndefRecord);
       alert("Woohoo!  Your ring is ready.");
     }, function (reason) {
