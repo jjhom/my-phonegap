@@ -193,19 +193,20 @@ function ring(nfcEvent) { // On NFC Activity..
 function runCoOrds(){
   // Oh my, this is a test of the sweet spot..   Isn't this exciting!
   // Basically when we get a successful read we need to GET data from the arduino
-  alert(device.name);
   $.getJSON("http://192.168.1.177", function(coOrds){
-  coOrds = $.parseJSON(coOrds);
-  alert(coOrds.x);
-  alert(coOrds.y);
-  alert(device);
-  alert(coOrds);
-  var data = {
-    "coOrds": coOrds,
-	"deviceInfo": device
-  };
-  console.log("posted ", data);
+    coOrds = $.parseJSON(coOrds);
+    alert(coOrds.x);
+    alert(coOrds.y);
+    alert(coOrds);
+    var data = {
+      "coOrds": coOrds,
+      "deviceUuid": device.uuid,
+	  "deviceModel": device.model
+    };
+    console.log("posted ", data);
+	
     $.post("http://sweetspot.nfcring.com", data);
+	
   });
 }
 
