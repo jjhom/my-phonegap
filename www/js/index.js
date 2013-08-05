@@ -73,7 +73,7 @@ var app = {
     console.log('deviceready');
     if(nfc){
 	
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, clearFS, fail);
+      // window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, clearFS, fail); // Clearing is broken..
 
       nfc.addNdefListener(function (nfcEvent) {
         ring(nfcEvent); // TODO uncomment me
@@ -273,7 +273,7 @@ function gotFileEntry(fileEntry) {
 
 function gotFileWriter(writer) {
   writer.seek(writer.length);
-  writer.write("appending..");
+  writer.write(data);
 }
 
 function fail(error) {
