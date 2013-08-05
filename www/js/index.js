@@ -150,13 +150,12 @@ $("body").on('click', "#exit", function () {
 })
 
 // We have the tag in a global object
-function ring(nfcEvent) {
+function ring(nfcEvent) { // On NFC Activity..
   console.log("Ring found, yay!")
   var action = gup("action");
   var option = gup("option");
   option = unescape(option);
   if(action == "website" && option == "sweetSpot"){ // are we measuring the sweet spot?
-    alert("WIFI needs to be on and be able to access Arduino also make sure screen or device wont turn off during test");
     // Oh my, this is a test of the sweet spot..   Isn't this exciting!
 	// Basically when we get a successful read we need to GET data from the arduino
 	$.getJSON("http://192.168.1.177", function(coOrds){
@@ -173,6 +172,7 @@ function ring(nfcEvent) {
 	  $.post("http://sweetspot.nfcring.com", data);
 	});
   }
+  
   else if (action != "") { // do we have an action to write or not?
 	// write
     // from https://github.com/don/phonegap-nfc-writer/blob/master/assets/www/main.js
@@ -180,25 +180,21 @@ function ring(nfcEvent) {
     console.log("New URL", newUrl)
     ndefRecord = ndef.uriRecord(newUrl); // support more types.. TODO
 
-    nfc.write(
-      [ndefRecord], function () {
-        navigator.notification.vibrate(100);
-        console.log("Written", ndefRecord);
-        alert("Woohoo!  Your ring is ready.");
-      }, function (reason) {
-        console.log("Inlay wriet failed")
-      });
+    nfc.write([ndefRecord], function () {
+      // navigator.notification.vibrate(100);
+      console.log("Written", ndefRecord);
+      alert("Woohoo!  Your ring is ready.");
+    }, function (reason) {
+      console.log("Inlay write failed")
+    });
+	
   }else{
     // read
-	// $('#writeRing').show();	 
 	console.log("Reading")
 	console.log(nfcEvent);
 	var ring = nfcEvent.tag;
 	console.log(ring);
-	// console.log("Read", JSON.stringify(ring));
 	ringData = nfc.bytesToString(ring.ndefMessage[0].payload); // TODO make this less fragile 
-	// $('#writeRing > .actionName').hide();
-	// $('#writeRing > .actionContents').html("<h1>Ring Contents</h1>"+ringData);
 	alert(ringData);
   }
 }
@@ -212,6 +208,7 @@ function scanQR() {
 	action = bc.action;
 	option = bc.option;
 	if (action == "website" && option == "sweetSpot"){
+	  alert("WIFI needs to be on and be able to access Arduino also make sure screen or device wont turn off during test");
 	  window.location = "sweetSpot.html?action=website&option=sweetSpot" // We use this to execute the Sweet Spot test runner.
 	}
 	else if (action && option){
