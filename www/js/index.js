@@ -209,6 +209,9 @@ function runCoOrds(){
     // $.post("http://sweetspot.nfcring.com", data);
 	
   });
+  
+  $('.actionContents').append("foo");
+  
 }
 
 function scanQR() {
