@@ -196,21 +196,21 @@ function runCoOrds(){
   // Basically when we get a successful read we need to GET data from the arduino
   $.getJSON("http://192.168.1.177", function(coOrds){
     coOrds = $.parseJSON(coOrds);
-    alert(coOrds.x);
-    alert(coOrds.y);
-    alert(coOrds);
     var data = {
       "coOrds": coOrds,
       "deviceUuid": device.uuid,
 	  "deviceModel": device.model
     };
+    $('.actionContents').append(data + "<br/>");
+	
     console.log("posted ", data);
 	
-    // $.post("http://sweetspot.nfcring.com", data);
+    $.post("http://sweetspot.nfcring.com", data); // Post the data off..
+	
+	$('.actionContents').append("Yay");
 	
   });
   
-  $('.actionContents').append("foo");
   
 }
 
@@ -237,20 +237,33 @@ function scanQR() {
 }
 
 function gup( name ){
-name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
-var regexS = "[\\?&]"+name+"=([^&#]*)";  
-var regex = new RegExp( regexS );  
-var results = regex.exec( window.location.href ); 
- if( results == null )    return "";  
-else    return results[1];}
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+  var regexS = "[\\?&]"+name+"=([^&#]*)";  
+  var regex = new RegExp( regexS );  
+  var results = regex.exec( window.location.href ); 
+  if( results == null ){
+    return "";
+  }
+  else{
+    return results[1];
+  }
+}
 
 function gotFS(fileSystem) {
-  fileSystem.root.getFile("sweetSpot.txt", {create: true, exclusive: false}, gotFileEntry, fail);
+  fileSystem.root.getFile("sweetSpot.log", {create: true, exclusive: false}, gotFileEntry, fail);
 }
 
 function gotFileEntry(fileEntry) {
   fileEntry.createWriter(gotFileWriter, fail);
 }
+
+function onGetDirectorySuccess(dir) { 
+  console.log("Created dir "+dir.name); 
+} 
+
+function onGetDirectoryFail(error) { 
+  console.log("Error creating directory "+error.code); 
+} 
 
 function gotFileWriter(writer) {
   writer.onwriteend = function(evt) {
