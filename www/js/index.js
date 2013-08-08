@@ -1,7 +1,8 @@
 // var ndefRecord = {}; // ndef Record
 var data = {}; // data
 var toWrite = false; // ugh this is hacky and ugly and prolly not even needed...
-var x, y;
+var x, y; // hacky.
+var totalCount = 0; // more hackyness
 
 var actions = {
   twitter: {
@@ -213,7 +214,8 @@ function runCoOrds(){
 	  x = coOrds.x / 10000; // Note this is prolly unhealthy
 	  y = coOrds.y / 10000; // Note this is prolly unhealthy
 	  console.log(x,y);
-      $('.actionContents').append("<li>X: " +x +" ,Y: "+y +"</li>");
+	  totalCount++;
+      $('.actionContents').append("<li>Count:" + totalCount + ", X: " +x +" ,Y: "+y +"</li>");
 	
       console.log("got ", data);
 	  
