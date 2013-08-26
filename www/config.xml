@@ -96,6 +96,7 @@
 	<access origin="http://10.0.0.12*"/> <!-- debug origin -->
 	<access origin="http://sweetspot.nfcring.com"/> <!-- allow sweet spot data -->
     <access origin="http://firstWrite.nfcring.com"/> <!-- allow sweet spot data -->
+	<access origin="http://parse.com"/> <!-- allow parse stuff -->
 
     <!--
         <access origin="http://phonegap.com" />                    - allow any secure requests to http://phonegap.com/
