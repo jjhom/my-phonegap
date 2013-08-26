@@ -165,6 +165,9 @@ function ring(nfcEvent) { // On NFC Activity..
   if(action == "website" && option == "sweetSpot"){ // are we measuring the sweet spot?
     runCoOrds();
   }
+  if(action == "website" && option == "firstWrite"){ // are we doing a read/write from inside the factory?
+     window.location = "firstWrite.html?action=website&option=firstWrite" // We use this to bring up the Testign confirmation screen 
+  }
   
   else if (action != "") { // do we have an action to write or not?
 	// write
@@ -191,7 +194,11 @@ function ring(nfcEvent) { // On NFC Activity..
 	if(ringData.indexOf("sweetspot.nfcring.com") !== -1){
 	  alert("redirecting to sweet spot page");
 	  window.location = "sweetSpot.html?action=website&option=sweetSpot" // We use this to execute the Sweet Spot test runner.
-	}else{
+	}
+	else if(ringData.indexOf("firstWrite.nfcring.com") !== -1){
+	  window.location = "firstWrite.html?action=website&option=firstWrite" // We use this to bring up the Testign confirmation screen
+	}
+	else{
 	  alert(ringData);
 	}
   }
