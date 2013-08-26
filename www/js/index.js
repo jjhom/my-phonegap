@@ -166,7 +166,17 @@ function ring(nfcEvent) { // On NFC Activity..
     runCoOrds();
   }
   if(action == "website" && option == "firstWrite"){ // are we doing a read/write from inside the factory?
-     window.location = "firstWrite.html?action=website&option=firstWrite" // We use this to bring up the Testign confirmation screen 
+  
+    var ndefRecord = ndef.uriRecord("http://nfcring.com"); // support more types.. TODO
+    console.log("nfcEvent", nfcEvent);
+    nfc.write([ndefRecord], function () {
+      navigator.notification.vibrate(100);
+      console.log("Written", ndefRecord);
+      alert("Ring tested Okay");
+    }, function (reason) {
+      console.log("Inlay write failed")
+    })
+     // window.location = "firstWrite.html?action=website&option=firstWrite" // We use this to bring up the Testign confirmation screen 
   }
   
   else if (action != "") { // do we have an action to write or not?
