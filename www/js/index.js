@@ -173,21 +173,19 @@ function ring(nfcEvent) { // On NFC Activity..
       navigator.notification.vibrate(100);
       console.log("Written", ndefRecord);
       $("body").addClass("green");
-	  $("#actionName").text("READ OKAY");
-	  setTimeout(function(){
-	    $("body").removeClass("green");
-		$("#actionName").text("UPLOADING");
-		
-	  }, 1000);
+      $("#actionName").text("UPLOADING");
 	  var id = nfcEvent.tag.id; // Array of ID..
 	  var idString = id.toString(); // String of ID
 	  var url = "http://firstWrite.nfcring.com"; // Where we are going to post this ID to
-      Parse.initialize("LUZtDvWdXuhddcsvz4dXESb0dF1C7U0axfsKoYUS", "tNEebXMiaiFy4pJx3MXFejCGCVF8waQw9P91WJWH");
+      
+	  // Init Parse and send object up, this is pretty nasty but to get things moving it will do.
+	  Parse.initialize("LUZtDvWdXuhddcsvz4dXESb0dF1C7U0axfsKoYUS", "tNEebXMiaiFy4pJx3MXFejCGCVF8waQw9P91WJWH");
       var TestObject = Parse.Object.extend("TestObject");
       var testObject = new TestObject();
       testObject.save({uid: idString}, {
 	    success: function(object){
 		  console.log("Success storing data back to parse");
+          $("body").removeClass("green");
 	      $("#actionName").text("HOLD RING TO SWEET SPOT");
 		}
       });
