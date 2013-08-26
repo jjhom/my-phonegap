@@ -167,12 +167,31 @@ function ring(nfcEvent) { // On NFC Activity..
   }
   if(action == "website" && option == "firstWrite"){ // are we doing a read/write from inside the factory?
   
-    var ndefRecord = ndef.uriRecord("http://nfcring.com"); // support more types.. TODO
+    var ndefRecord = ndef.uriRecord("http://nfcring.com/getStarted"); // support more types.. TODO
     console.log("nfcEvent", nfcEvent);
     nfc.write([ndefRecord], function () {
       navigator.notification.vibrate(100);
       console.log("Written", ndefRecord);
-      alert("Ring tested Okay");
+      $("body").addClass("green");
+	  $("#actionName").text("READ OKAY");
+	  setTimeout(function(){
+	    $("body").removeClass("green");
+		$("#actionName").text("UPLOADING");
+		
+	  }, 1000);
+	  var id = nfcEvent.tag.id; // Array of ID..
+	  var idString = id.toString(); // String of ID
+	  var url = "http://firstWrite.nfcring.com"; // Where we are going to post this ID to
+      Parse.initialize("LUZtDvWdXuhddcsvz4dXESb0dF1C7U0axfsKoYUS", "tNEebXMiaiFy4pJx3MXFejCGCVF8waQw9P91WJWH");
+      var TestObject = Parse.Object.extend("TestObject");
+      var testObject = new TestObject();
+      testObject.save({uid: idString}, {
+	    success: function(object){
+		  console.log("Success storing data back to parse");
+	      $("#actionName").text("HOLD RING TO SWEET SPOT");
+		}
+      });
+	  
     }, function (reason) {
       console.log("Inlay write failed")
     })

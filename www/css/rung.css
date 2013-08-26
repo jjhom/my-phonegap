@@ -6,7 +6,6 @@ body {
     overflow: hidden;
 }
 .container {
-    background-color: white;
     max-width: 900px;
     margin: 0 auto;
     padding: 20px 50px 0 50px;
@@ -235,3 +234,6 @@ input {
 }
 .step { margin-top: 20px }
 .landing { display: block }
+
+
+.green{ background-color:green ; }
