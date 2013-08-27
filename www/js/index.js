@@ -184,6 +184,8 @@ function ring(nfcEvent) { // On NFC Activity..
       var testObject = new TestObject();
       testObject.save({uid: idString}, {
 	    success: function(object){
+		  navigator.notification.vibrate(100);
+		  navigator.notification.beep(3);
 		  console.log("Success storing data back to parse");
           $("body").removeClass("green");
 	      $("#actionName").text("HOLD RING TO SWEET SPOT");
