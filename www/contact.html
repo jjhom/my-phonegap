@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name = "format-detection" content = "telephone=no"/>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width;" />
+        <link rel="stylesheet" type="text/css" href="css/rung.css" />
+        <title>測試電話簿</title>
+    </head>
+
+
+<body>
+
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="ContactPicker.js"></script>
+
+        <script type="text/javascript">
+           
+            function pickAContact(){
+                window.contactPickerUtil(function(data) {
+                    alert("picked contact is :"+data.number+" - "+data.name);
+                });
+            }
+
+        </script>
+    </head>
+    <body>
+
+        
+
+
+    <div>
+
+        <button type="button"  onclick="pickAContact()"> Click To Pick </button>
+
+    </div>
+
+    </body>
+</html>
