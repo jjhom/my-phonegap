@@ -141,6 +141,9 @@ $("body").on('click', "#scan", function () {
 $("body").on('click', "#read", function () {
   window.location = "readAction.html";
 });
+$("body").on('click', "#contact", function () {
+  window.location = "contact.html";
+});
 $("body").on('click', ".action > .actionContents > .ringActions > .ringAction", function () {
   action = $(this).data("action");
   window.location = "addParameterToAction.html?action="+action;
